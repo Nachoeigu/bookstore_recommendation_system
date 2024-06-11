@@ -54,15 +54,13 @@ def cleaning_metadata_filters(filters):
             continue
         elif filters[key] == 0:
             continue
+        elif filters[key] == ['']:
+            continue        
         elif key == 'price':
             output[key] = {'$lte': filters[key]}
         elif key == 'category':
             output[key] = {'$in': filters[key]}
         elif key == 'rating':
             output[key] = {'$gte': filters[key]}
-        
-        
-        else:
-            output[key] = filters[key]
     
     return output

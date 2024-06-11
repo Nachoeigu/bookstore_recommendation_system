@@ -52,4 +52,4 @@ class BookRecommender:
 
 if __name__ == '__main__':
     bot = BookRecommender(model = model)
-    print(bot.answer_query(query = 'I want a book similar like Game of Thrones'))
+    print(bot.answer_query(query = 'Offers to me a book like game of thrones'))
