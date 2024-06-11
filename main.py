@@ -4,13 +4,14 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from constants import SYSTEM_PROMPT
 from langchain_core.runnables import RunnableLambda
+from langchain_community.callbacks import get_openai_callback
 from functions import *
 from pydantic_classes import *
 
 
 load_dotenv()
-model = ChatOpenAI(model="gpt-4o", temperature = 0)
-model = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature = 0)
+model = ChatOpenAI(model="gpt-3.5-turbo", temperature = 0)
+#model = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature = 0)
 
 class BookRecommender:
 
@@ -51,5 +52,9 @@ class BookRecommender:
 
 
 if __name__ == '__main__':
-    bot = BookRecommender(model = model)
-    print(bot.answer_query(query = 'Offers to me a book like game of thrones'))
+    with get_openai_callback() as cb:
+        bot = BookRecommender(model = model)
+        print(bot.answer_query(query = 'A book about football'))
+        print(f"Total Cost in USD: ${cb.total_cost}")
+
+
