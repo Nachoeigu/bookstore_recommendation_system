@@ -1,0 +1,7 @@
+pandas
+langchain_openai
+python-dotenv
+langchain-pinecone
+langchain-community
+jq
+langchain-google-genai
