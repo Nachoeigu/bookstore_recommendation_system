@@ -54,7 +54,7 @@ class BookRecommender:
 if __name__ == '__main__':
     with get_openai_callback() as cb:
         bot = BookRecommender(model = model)
-        print(bot.answer_query(query = 'A book about football'))
+        print(bot.answer_query(query = 'A book about leadership in business'))
         print(f"Total Cost in USD: ${cb.total_cost}")
 
 
