@@ -1,10 +1,19 @@
+import os
 from dotenv import load_dotenv
+import sys
+
+load_dotenv()
+WORKDIR=os.getenv("WORKDIR")
+os.chdir(WORKDIR)
+sys.path.append(WORKDIR)
+
 from langchain_openai import ChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from constants import SYSTEM_PROMPT
 from langchain_core.runnables import RunnableLambda
 from langchain_community.callbacks import get_openai_callback
+from langchain.output_parsers import PydanticOutputParser
 from functions import *
 from pydantic_classes import *
 
@@ -52,9 +61,10 @@ class BookRecommender:
 
 
 if __name__ == '__main__':
-    with get_openai_callback() as cb:
-        bot = BookRecommender(model = model)
-        print(bot.answer_query(query = 'A book about leadership in business'))
-        print(f"Total Cost in USD: ${cb.total_cost}")
+    while True:
 
+        query = input("What do you want to read?\n")
+        bot = BookRecommender(model = model)
+        print(bot.answer_query(query = query))
+        print("-------------------")
 
