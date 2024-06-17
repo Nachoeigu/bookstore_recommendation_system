@@ -5,3 +5,5 @@ langchain-pinecone
 langchain-community
 jq
 langchain-google-genai
+fastapi
+uvicorn
