@@ -11,7 +11,7 @@ WORKDIR=os.getenv("WORKDIR")
 os.chdir(WORKDIR)
 sys.path.append(WORKDIR)
 
-from src.model import BookRecommender
+from src.executor.model import BookRecommender
 
 app = FastAPI()
 model = ChatOpenAI(model="gpt-3.5-turbo", temperature = 0)

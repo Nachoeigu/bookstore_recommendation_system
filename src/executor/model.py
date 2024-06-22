@@ -3,8 +3,8 @@ from constants import SYSTEM_PROMPT
 from langchain_core.runnables import RunnableLambda
 from langchain_community.callbacks import get_openai_callback
 from langchain.output_parsers import PydanticOutputParser
-from src.functions import *
-from src.pydantic_classes import *
+from src.vdb_generator.functions import *
+from src.executor.pydantic_classes import *
 
 
 class BookRecommender:

@@ -6,4 +6,5 @@ langchain-community
 jq
 langchain-google-genai
 fastapi
+aiohttp
 uvicorn

@@ -1,14 +1,15 @@
 import os
 from dotenv import load_dotenv
 import sys
-from langchain_openai import ChatOpenAI
-from langchain_google_genai import ChatGoogleGenerativeAI
-from src.model import BookRecommender
 
 load_dotenv()
 WORKDIR=os.getenv("WORKDIR")
 os.chdir(WORKDIR)
 sys.path.append(WORKDIR)
+
+from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
+from src.executor.model import BookRecommender
 
 load_dotenv()
 

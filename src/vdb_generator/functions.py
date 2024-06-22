@@ -10,8 +10,6 @@ sys.path.append(WORKDIR)
 from langchain_openai import OpenAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
 from langchain_community.document_loaders import JSONLoader
-from pathlib import Path
-import time
 
 
 
@@ -23,6 +21,7 @@ def extract_metadata(record: dict, metadata: dict) -> dict:
     metadata['availability'] = record['availability']
     metadata['category'] = record['category']
     metadata['number of reviews'] = record['number of reviews']
+    metadata['image_url'] = record['image_url']
     print("Metadata extracted!")
     return metadata
 
@@ -41,7 +40,7 @@ def transforming_data(file_name):
 def pushing_data_to_vectorstore(data):
     PineconeVectorStore.from_documents(
         documents = data,
-        index_name='bookstorerecommendation',
+        index_name='bookstore-recommender',
         embedding=OpenAIEmbeddings(model="text-embedding-ada-002")
     )
     print("Pushed to Pinecone!")
@@ -51,7 +50,7 @@ def adding_new_data_to_vectorstore(file_name):
     pushing_data_to_vectorstore(data)
 
 def open_vectorstore():
-    vectorstore = PineconeVectorStore(index_name='bookstorerecommendation', embedding=OpenAIEmbeddings(model="text-embedding-ada-002"))
+    vectorstore = PineconeVectorStore(index_name='bookstore-recommender', embedding=OpenAIEmbeddings(model="text-embedding-ada-002"))
     print("Log in the vectorstore!")
 
     return vectorstore
