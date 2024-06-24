@@ -16,10 +16,9 @@ load_dotenv()
 if __name__ == '__main__':
     model = ChatOpenAI(model="gpt-3.5-turbo", temperature = 0)
     #model = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature = 0)
+    bot = BookRecommender(model = model)
     while True:
-
         query = input("What do you want to read?\n")
-        bot = BookRecommender(model = model)
         print(bot.answer_query(query = query))
         print("-------------------")
 

@@ -13,6 +13,7 @@ class BookRecommender:
         self.model_with_tool = model.bind_tools([StructuredLLMOutput])
         self.vectorstore = open_vectorstore()
         self.prompt_template = self.__defining_prompt_template()
+        self.__developing_chain()
 
     def __defining_prompt_template(self):
         prompt_template = ChatPromptTemplate.from_messages([
@@ -30,10 +31,15 @@ class BookRecommender:
                     filter= cleaning_metadata_filters(structured_query)
                 )
 
+    def __developing_chain(self):
+        self.chain = self.prompt_template \
+                        | self.model_with_tool\
+                            | RunnableLambda(parse_model_response)
+
 
     def answer_query(self, query:str):
-        chain = self.prompt_template | self.model_with_tool | RunnableLambda(parse_model_response)
-        structured_query_for_vectorstore = chain.invoke({'input_message': query})
+
+        structured_query_for_vectorstore = self.chain.invoke({'input_message': query})
         print(f"The user query was structured: \n {structured_query_for_vectorstore}")
         result = self.__searching_in_vdb(structured_query_for_vectorstore)
 
