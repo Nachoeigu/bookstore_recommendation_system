@@ -40,7 +40,7 @@ class BookRecommender:
             return "We have the following books that you might be interested:\n\n" + '-\n'.join([book.metadata['title'] for book in vdb_output]) + "\n Don´t forget to visit our bookstore :)"
         
     def __evaluating_score(self, vdb_output: list) -> str:
-        threshold_score = 0.93
+        threshold_score = 0.85
         return [document[0] for document in vdb_output if document[1] >= threshold_score]
         
     

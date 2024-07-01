@@ -14,7 +14,7 @@ sys.path.append(WORKDIR)
 from src.executor.model import BookRecommender
 
 app = FastAPI()
-model = ChatOpenAI(model="gpt-3.5-turbo", temperature = 0)
+model = ChatOpenAI(model="gpt-4o", temperature = 0)
 #model = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature = 0)
 
 bot = BookRecommender(model = model)
@@ -26,5 +26,3 @@ def main():
 @app.get("/query_books")
 def get_books(preferences: str) -> str:
     return bot.answer_query(query = preferences)
-
-#uvicorn app:app --host 0.0.0.0 --port 80
