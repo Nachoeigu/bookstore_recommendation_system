@@ -58,6 +58,7 @@ def open_vectorstore():
 def parse_model_response(response):
     return response.tool_calls[0]['args']
 
+
 def cleaning_metadata_filters(filters):
     output = {}
     for key in filters.keys():

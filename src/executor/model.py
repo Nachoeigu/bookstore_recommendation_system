@@ -26,26 +26,36 @@ class BookRecommender:
 
     def __searching_in_vdb(self, structured_query):
         print("Searching in the vectorstore...")
-        return self.vectorstore.similarity_search(
+        vdb_output = self.vectorstore.similarity_search_with_relevance_scores(
                     query = structured_query['text'],
                     filter= cleaning_metadata_filters(structured_query)
                 )
+        
+        return vdb_output
+
+    def __structuring_vdb_output(self, vdb_output: list) -> str:
+        if vdb_output == []:
+            return "Sorry, we don´t have any book with that specifications. Try with other question..."
+        else:
+            return "We have the following books that you might be interested:\n\n" + '-\n'.join([book.metadata['title'] for book in vdb_output]) + "\n Don´t forget to visit our bookstore :)"
+        
+    def __evaluating_score(self, vdb_output: list) -> str:
+        threshold_score = 0.93
+        return [document[0] for document in vdb_output if document[1] >= threshold_score]
+        
+    
 
     def __developing_chain(self):
         self.chain = self.prompt_template \
                         | self.model_with_tool\
-                            | RunnableLambda(parse_model_response)
+                            | RunnableLambda(parse_model_response) \
+                                | RunnableLambda(self.__searching_in_vdb) \
+                                    | RunnableLambda(self.__evaluating_score) \
+                                        | RunnableLambda(self.__structuring_vdb_output)
+
 
 
     def answer_query(self, query:str):
 
-        structured_query_for_vectorstore = self.chain.invoke({'input_message': query})
-        print(f"The user query was structured: \n {structured_query_for_vectorstore}")
-        result = self.__searching_in_vdb(structured_query_for_vectorstore)
-
-        if result == []:
-            return "Sorry, we don´t have any book with that specifications"
-        else:
-            return "We have the following books that you might be interested:\n\n" + '-\n'.join([book.metadata['title'] for book in result]) + "\n Don´t forget to visit our bookstore :)"
-
+        return self.chain.invoke({'input_message': query})
 
