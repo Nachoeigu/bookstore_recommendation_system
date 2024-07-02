@@ -28,7 +28,8 @@ class BookRecommender:
         print("Searching in the vectorstore...")
         vdb_output = self.vectorstore.similarity_search_with_relevance_scores(
                     query = structured_query['text'],
-                    filter= cleaning_metadata_filters(structured_query)
+                    filter= cleaning_metadata_filters(structured_query),
+                    score_threshold=0.85
                 )
         
         return vdb_output
@@ -37,12 +38,7 @@ class BookRecommender:
         if vdb_output == []:
             return "Sorry, we don´t have any book with that specifications. Try with other question..."
         else:
-            return "We have the following books that you might be interested:\n\n" + '-\n'.join([book.metadata['title'] for book in vdb_output]) + "\n Don´t forget to visit our bookstore :)"
-        
-    def __evaluating_score(self, vdb_output: list) -> str:
-        threshold_score = 0.85
-        return [document[0] for document in vdb_output if document[1] >= threshold_score]
-        
+            return "We have the following books that you might be interested:\n\n" + '-\n'.join([book[0].metadata['title'] for book in vdb_output]) + "\n Don´t forget to visit our bookstore :)"        
     
 
     def __developing_chain(self):
@@ -50,8 +46,7 @@ class BookRecommender:
                         | self.model_with_tool\
                             | RunnableLambda(parse_model_response) \
                                 | RunnableLambda(self.__searching_in_vdb) \
-                                    | RunnableLambda(self.__evaluating_score) \
-                                        | RunnableLambda(self.__structuring_vdb_output)
+                                    | RunnableLambda(self.__structuring_vdb_output)
 
 
 
