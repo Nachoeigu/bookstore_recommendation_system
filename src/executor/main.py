@@ -14,7 +14,7 @@ from src.executor.model import BookRecommender
 load_dotenv()
 
 if __name__ == '__main__':
-    model = ChatOpenAI(model="gpt-3.5-turbo", temperature = 0)
+    model = ChatOpenAI(model="gpt-4o-mini", temperature = 0)
     #model = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature = 0)
     bot = BookRecommender(model = model)
     while True:

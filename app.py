@@ -14,7 +14,7 @@ sys.path.append(WORKDIR)
 from src.executor.model import BookRecommender
 
 app = FastAPI()
-model = ChatOpenAI(model="gpt-4o", temperature = 0)
+model = ChatOpenAI(model="gpt-4o-mini", temperature = 0)
 #model = ChatGoogleGenerativeAI(model="gemini-1.5-pro", temperature = 0)
 
 bot = BookRecommender(model = model)
